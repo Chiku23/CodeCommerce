@@ -11,12 +11,12 @@
     <title>{{config('app.name')}}</title>
     @stack('styles')
 </head>
-<body class="bg-background text-black flex flex-col min-h-screen h-dvh relative">
+<body class="bg-background text-black flex flex-col min-h-screen">
     {{-- Include Header --}}
+    @include('admin.components.admin-bar')
     @include('admin.includes.header')
 
-    <div class="flex flex-col max-w-1200 mx-auto w-full h-full">
-        @include('admin.components.admin-bar')
+    <div class="flex flex-1 max-w-1200 mx-auto w-full">
         @yield('content')
     </div>
 

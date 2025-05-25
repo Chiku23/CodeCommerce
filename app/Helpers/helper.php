@@ -5,6 +5,7 @@ use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductImage;
 use App\Models\ProductReview;
 use App\Models\ProductAttribute;
 
@@ -109,4 +110,29 @@ function getProductReviews($productID)
         ->orderBy('created_at', 'desc')
         ->get()
         ->toArray();
+}
+
+/**
+ * Get the products main image for a given product ID,
+ *
+ * @param int $productID
+ * @return array
+ */
+function getProductMainImage($productID)
+{
+    return ProductImage::where('product_id', $productID)
+        ->where('is_main', true)
+        ->first();
+}
+
+/**
+ * Get the products main image for a given product ID,
+ *
+ * @param int $productID
+ * @return array
+ */
+function getProductCategory($categoryID)
+{
+    return Category::where('id', $categoryID)
+        ->first();
 }

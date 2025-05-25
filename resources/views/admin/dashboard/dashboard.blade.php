@@ -16,10 +16,10 @@
 @endphp
 
 
-<div class="DashboardMain w-full h-full">
+<div class="DashboardMain w-full">
     <div class="ContainerTitle grid grid-cols-12 mx-auto h-full">
-        <div class="leftSidebar border-r border-black col-span-1 bg-gray-400">
-            <div class="ActionGroup mt-4">
+        <div class="leftSidebar border-r border-black col-span-1 bg-gray-400 relative">
+            <div class="ActionGroup sticky top-12">
                 <div class="Actions flex flex-col font-bold">
                     @foreach($arrMenuItems as $menu => $url)
                         <a href="{{ $url }}" class="">

@@ -14,9 +14,16 @@ $arrProducts = $products->toArray();
     <div class="products grid grid-cols-12">
         @if(!empty($arrProducts))
             @foreach ($arrProducts as $product)
-                <a class="Product border-2 p-4 m-2 col-span-4" href="{{ url('shop/'.$product['slug']) }}">
+                @php
+                     $productImage = getProductMainImage($product['id']);
+                     $category = getProductCategory($product['category_id']);
+                @endphp
+                <a class="Product border-2 p-4 m-2 col-span-2 relative" href="{{ url('shop/'.$product['slug']) }}">
+                    <div class="ProductImage">
+                        <img src="{{ asset('storage/' . $productImage['path']) }}" alt="{{$product['name']}}">
+                    </div>
+                    <div class="categoryName text-sm border-2 bg-gray-200 absolute top-0 right-0 z-50">{{$category['name']}}</div>
                     <div class="productName text-xl font-bold">{{$product['name']}}</div>
-                    <div class="productDesc">{{$product['description']}}</div>
                 </a>
             @endforeach
         @endif
