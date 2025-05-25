@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use app\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
 // include the admin routes
-require_once('./admin.php');
+require_once __DIR__ . '/admin.php';
 
 /*
  ********************** 
@@ -17,6 +18,9 @@ require_once('./admin.php');
 // Home Route
 Route::get('/', [HomeController::class , 'index'])->name('home');
 
+Route::get('/shop/{productSlug}', [ProductController::class , 'show'])->name('productShow');
+
 // Auth Routes
-Route::get('login', [LoginController::class , 'login'])->name('login');
-Route::get('register', [RegisterController::class , 'register'])->name('register');
+Route::get('/login', [LoginController::class , 'login'])->name('login');
+Route::post('/loginuser', [LoginController::class , 'loginUser']);
+Route::get('/register', [RegisterController::class , 'register'])->name('register');
