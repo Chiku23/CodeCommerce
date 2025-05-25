@@ -16,6 +16,22 @@ class ProductController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Product $product)
+    {
+        $slug = request('productSlug');
+        if(empty($slug)){
+            return redirect()->route('home')->withErrors(['ErrorMSG' => 'Something went wrong, Please try again.']);
+        }
+        $products = new Product;
+        // Retrieve the product details
+        $product = $products->where('slug',$slug)->first();
+
+        return(view('shop.product.show',compact('product')));
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -27,14 +43,6 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
     {
         //
     }

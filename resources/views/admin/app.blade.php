@@ -11,24 +11,17 @@
     <title>{{config('app.name')}}</title>
     @stack('styles')
 </head>
-<body class="bg-foreground text-black flex flex-col min-h-screen">
+<body class="bg-background text-black flex flex-col min-h-screen h-dvh relative">
     {{-- Include Header --}}
-    @if(!Request::routeIs('login') && !Request::routeIs('register'))
-        @include('includes.header')
-    @endif
+    @include('admin.includes.header')
 
-    @if(!Request::routeIs('login') && !Request::routeIs('register'))
-        <div class="flex flex-grow max-w-1200 mx-auto w-full">
-    @else
-        <div class="flex flex-col max-w-1200 mx-auto w-full h-dvh">
-    @endif
+    <div class="flex flex-col max-w-1200 mx-auto w-full h-full">
+        @include('admin.components.admin-bar')
         @yield('content')
     </div>
 
     {{-- Include Footer --}}
-    @if(!Request::routeIs('login') && !Request::routeIs('register'))
-        @include('includes.footer')
-    @endif
+    @include('admin.includes.footer')
 
     {{-- Include Custom Js Scripts --}}
     @vite('resources/js/app.js')
