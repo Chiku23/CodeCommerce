@@ -11,17 +11,14 @@
     <title>{{config('app.name')}}</title>
     @stack('styles')
 </head>
-<body class="bg-background text-black flex flex-col min-h-screen h-dvh">
+<body class="bg-background text-black flex flex-col min-h-screen">
     {{-- Include Header --}}
     {{-- @if(!Request::routeIs('login') && !Request::routeIs('register')) --}}
         @include('shop.includes.header')
     {{-- @endif --}}
 
-    @if(!Request::routeIs('login') && !Request::routeIs('register'))
-        <div class="flex flex-grow max-w-1200 mx-auto w-full h-full">
-    @else
-        <div class="flex flex-col max-w-1200 mx-auto w-full h-full">
-    @endif
+
+    <div class="flex flex-1 max-w-1200 mx-auto w-full">
         @yield('content')
     </div>
 
