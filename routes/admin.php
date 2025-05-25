@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\AdminUserListController;
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class , 'index'])->name('home');
     Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');

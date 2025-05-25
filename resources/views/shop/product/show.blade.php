@@ -2,12 +2,17 @@
 
 @section('content')
 @php
-$arrProduct = $product->toArray();
-$arrAttributes = getProductAttributes($arrProduct['id']);
-$arrReviews = getProductReviews($arrProduct['id']);
+    $arrProduct = $product->toArray();
+    $pID = $arrProduct['id'];
+    $arrAttributes = getProductAttributes($pID);
+    $arrReviews = getProductReviews($pID);
+    $productImage = getProductMainImage($pID);
 @endphp
 <div class="ProductDetailsPage flex flex-col w-full">
-    <div class="Productp-4 m-2">
+    <div class="Product p-4 m-2">
+        <div class="productImage">
+            <img src="{{ asset('storage/' . $productImage['path']) }}" alt="{{$arrProduct['name']}}">
+        </div>
         <div class="productName text-xl font-bold">{{$arrProduct['name']}}</div>
         <div class="productDesc">{{$arrProduct['description']}}</div>
     </div>
