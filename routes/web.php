@@ -18,9 +18,13 @@ require_once __DIR__ . '/admin.php';
 // Home Route
 Route::get('/', [HomeController::class , 'index'])->name('home');
 
-Route::get('/shop/{productSlug}', [ProductController::class , 'show'])->name('productShow');
+Route::prefix('shop')->name('shop.')->group(function () {
+    Route::get('/login', [LoginController::class , 'login'])->name('login');
+    Route::post('/loginuser', [LoginController::class , 'loginUser']);
+    Route::get('/register', [RegisterController::class , 'register'])->name('register');
+    Route::post('/registeruser', [RegisterController::class , 'registerUser']);
+    
+    Route::get('/logout', [LoginController::class , 'logout'])->name('logout');
 
-// Auth Routes
-Route::get('/login', [LoginController::class , 'login'])->name('login');
-Route::post('/loginuser', [LoginController::class , 'loginUser']);
-Route::get('/register', [RegisterController::class , 'register'])->name('register');
+    Route::get('/{productSlug}', [ProductController::class , 'show'])->name('productShow');
+});

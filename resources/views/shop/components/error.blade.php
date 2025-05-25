@@ -1,4 +1,4 @@
-<div id="errorPopupContainer" class="translate-x-[150%] fixed top-10 right-5 shadow-lg z-50 transition-all ease-in-out duration-150">
+<div id="errorPopupContainer" class="translate-x-[150%] fixed top-10 right-5 shadow-lg z-[9999] transition-all ease-in-out duration-150">
     @if ($errors->any() || !empty($successMessage))
         <div id="errorPopup" class="text-white relative">
             @if ($errors->any())
