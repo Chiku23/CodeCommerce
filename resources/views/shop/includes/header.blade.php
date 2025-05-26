@@ -8,21 +8,28 @@
             <span class="px-4 capitalize">{{ session('user')? 'Hello '.session('user')['name'] : '' }}</span>
             <div class="iconMenus flex gap-8">
                 @if (Auth::check())
-                    <a href="{{ Route('shop.login') }}" class=" h-24 flex items-center justify-center text-4xl" title="Profile">
+                    <a href="{{ Route('shop.login') }}" class="mx-2 flex items-center justify-center text-4xl" title="Profile">
                         <i class="fa-solid fa-user text-blue-500"></i>
                     </a>
-                    <a href="{{ Route('shop.logout') }}" class=" h-24 flex items-center justify-center text-4xl" title="Log Out">
+                    <a href="{{ Route('shop.logout') }}" class="mx-2 flex items-center justify-center text-4xl" title="Log Out">
                         <i class="fa-solid fa-right-from-bracket text-red-500"></i>
                     </a>
                 @else
-                    <a href="{{ Route('shop.login') }}" class=" h-24 flex items-center justify-center text-4xl" title="Login">
+                    <a href="{{ Route('shop.login') }}" class="mx-2 flex items-center justify-center text-4xl" title="Login">
                         <i class="fa-solid fa-right-to-bracket text-blue-500"></i>
                     </a>
                 @endif
             </div>
-            <span class="cartIcon h-24 w-24 flex items-center justify-center text-4xl" title="My Cart">
+            <span class="favoritesIcon mx-2 flex items-center justify-center text-4xl" title="My Favorites">
+                <i class="fa-solid text-red-500 fa-heart cursor-pointer relative">
+                    <span class="absolute top-[-8px] right-[-8px] h-[20px] w-[20px] flex items-center justify-center rounded-full bg-blue-500 text-white text-xs">
+                        3
+                    </span>    
+                </i>
+            </span>
+            <span class="cartIcon mx-2 flex items-center justify-center text-4xl" title="My Cart">
                 <i class="fa-solid fa-cart-shopping cursor-pointer relative">
-                    <span class="absolute top-[-4px] right-[-4px] h-[20px] w-[20px] flex items-center justify-center rounded-full bg-blue-500 text-white text-xs">
+                    <span class="absolute top-[-8px] right-[-8px] h-[20px] w-[20px] flex items-center justify-center rounded-full bg-blue-500 text-white text-xs">
                         3
                     </span>
                 </i>
