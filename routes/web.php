@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Shop\ProductController;
 use App\Http\Controllers\Auth\RegisterController;
 
 // include the admin routes
@@ -25,6 +26,11 @@ Route::prefix('shop')->name('shop.')->group(function () {
     Route::post('/registeruser', [RegisterController::class , 'registerUser']);
     
     Route::get('/logout', [LoginController::class , 'logout'])->name('logout');
+
+    // Cart Routes
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 
     Route::get('/{productSlug}', [ProductController::class , 'show'])->name('productShow');
 });

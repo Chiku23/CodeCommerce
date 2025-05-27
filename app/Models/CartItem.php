@@ -21,5 +21,22 @@ class CartItem extends Model
         'quantity',
         'price_at_add',
     ];
+    
+    /**
+     * The relationships that should be touched on save.
+     * This will update the `updated_at` timestamp of the cart.
+     *
+     * @var array
+     */
+    protected $touches = ['cart'];
 
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

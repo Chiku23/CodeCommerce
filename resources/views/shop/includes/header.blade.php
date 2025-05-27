@@ -27,13 +27,13 @@
                     </span>    
                 </i>
             </span>
-            <span class="cartIcon mx-2 flex items-center justify-center text-4xl" title="My Cart">
+            <a href="{{ Route('shop.cart') }}" class="cartIcon mx-2 flex items-center justify-center text-4xl" title="My Cart">
                 <i class="fa-solid fa-cart-shopping cursor-pointer relative">
-                    <span class="absolute top-[-8px] right-[-8px] h-[20px] w-[20px] flex items-center justify-center rounded-full bg-blue-500 text-white text-xs">
-                        3
+                    <span id="cart-count" class="absolute top-[-8px] right-[-8px] h-[20px] w-[20px] flex items-center justify-center rounded-full bg-blue-500 text-white text-xs">
+                        {{ getCartCount() }}
                     </span>
                 </i>
-            </span>
+            </a>
         </div>
     </div>
 </header>
