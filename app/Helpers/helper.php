@@ -2,13 +2,15 @@
 
 use App\Models\User;
 use App\Models\Brand;
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductImage;
 use App\Models\ProductReview;
 use App\Models\ProductAttribute;
-
+use Illuminate\Support\Facades\Auth;
 /*
  *****************************************************************************
  * Define All the functions that are supposed to be used repeatedly and widely
@@ -135,4 +137,42 @@ function getProductCategory($categoryID)
 {
     return Category::where('id', $categoryID)
         ->first();
+}
+
+/**
+ * Get the current Cart Items Count
+ *
+ * @return int
+ */
+function getCartCount()
+{
+    $cart = null;
+
+    if (Auth::check()) {
+        // User is logged in, get their active cart
+        $cart = Cart::where('user_id', Auth::id())
+                    ->where('status', 'active')
+                    ->first();
+    } else {
+        // User is a guest, try to get their cart based on session ID
+        $sessionId = session()->get('cart_guest_session_id');
+        if ($sessionId) {
+            $cart = Cart::where('session_id', $sessionId)
+                        ->whereNull('user_id') // Ensure it's a guest cart
+                        ->where('status', 'active')
+                        ->first();
+        }
+    }
+
+    // If a cart is found, sum the quantities of its items; otherwise, return 0.
+    return $cart ? $cart->items()->sum('quantity') : 0;
+}
+
+/**
+ * Get the rupess sign tag
+ *
+ * @return string
+ */
+function rupeeSign(){
+    return '<i class="fa-solid fa-indian-rupee-sign"></i>';
 }
