@@ -18,7 +18,7 @@
     {{-- @endif --}}
 
 
-    <div class="flex flex-1 max-w-1200 mx-auto w-full">
+    <div class="flex flex-1 max-w-[1200px] mx-auto w-full">
         @yield('content')
     </div>
 

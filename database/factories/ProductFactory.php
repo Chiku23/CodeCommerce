@@ -25,7 +25,7 @@ class ProductFactory extends Factory
             'price' => $price,
             'compare_at_price' => $this->faker->boolean(30) ? $this->faker->randomFloat(2, $price + 10, $price + 100) : null, // 30% chance to have a compare_at_price higher than price
             'cost_price' => $this->faker->boolean(50) ? $this->faker->randomFloat(2, $price * 0.5, $price * 0.8) : null, // 50% chance to have a cost price, less than actual price
-            'sku' => Str::upper(Str::random(3)) . '-' . $this->faker->unique()->randomNumber(10), // Unique SKU like 'ABC-12345'
+            'sku' => Str::upper(Str::random(3)) . '-' . $this->faker->unique()->randomNumber(4), // Unique SKU like 'ABC-12345'
             'quantity' => $this->faker->numberBetween(0, 500), // Quantity in stock
             'status' => $this->faker->randomElement(['draft', 'published', 'archived']), // Random status
             'is_featured' => $this->faker->boolean(20), // 20% chance to be featured

@@ -38,6 +38,8 @@ public function index(){
         if (!$cart) {
             $cart = [];
         }
+        // Forget the session if present - after coming to cart page from unsuccessful checkout.
+        session()->forget('purchaser');
 
         return view('shop.cart.cart', compact('cart'));
     }
