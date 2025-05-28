@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Shop\CartController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Shop\Auth\LoginController;
 use App\Http\Controllers\Shop\ProductController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Shop\Auth\RegisterController;
 
 // include the admin routes
 require_once __DIR__ . '/admin.php';
@@ -20,11 +20,11 @@ require_once __DIR__ . '/admin.php';
 Route::get('/', [HomeController::class , 'index'])->name('home');
 
 Route::prefix('shop')->name('shop.')->group(function () {
+    // Auth Routes
     Route::get('/login', [LoginController::class , 'login'])->name('login');
     Route::post('/loginuser', [LoginController::class , 'loginUser']);
     Route::get('/register', [RegisterController::class , 'register'])->name('register');
     Route::post('/registeruser', [RegisterController::class , 'registerUser']);
-    
     Route::get('/logout', [LoginController::class , 'logout'])->name('logout');
 
     // Cart Routes
