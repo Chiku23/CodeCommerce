@@ -176,3 +176,16 @@ function getCartCount()
 function rupeeSign(){
     return '<i class="fa-solid fa-indian-rupee-sign"></i>';
 }
+
+/**
+ * Check the user details if an admin or not
+ *
+ * @return boolean
+ */
+function isAdminUser()
+{
+    if(Auth::user()){
+        return Auth::user()->is_admin;
+    }
+    return false;
+}

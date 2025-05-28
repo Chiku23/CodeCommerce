@@ -52,7 +52,7 @@
                 <span>Total:</span>
                 <span>{!! rupeeSign() !!}{{ number_format($cart->items->sum(fn($item) => $item->price_at_add * $item->quantity), 2) }}</span>
             </div>
-            <a href="{{ url('shop/checkout') }}" class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">
+            <a href="{{ Route('shop.checkout.index') }}" class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">
                 Proceed to Checkout
             </a>
         </div>
