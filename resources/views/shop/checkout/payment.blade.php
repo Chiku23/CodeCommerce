@@ -1,9 +1,6 @@
 @extends('shop.layouts.app')
 
 @section('content')
-@php
-    $purchaser = session()->get('purchaser');
-@endphp
 {{-- Include the Stripe Script --}}
 <script src="https://js.stripe.com/v3/"></script>
 
@@ -60,40 +57,74 @@
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         submitButton.disabled = true;
-
-        // Fetch client secret
-        const response = await fetch("{{ route('shop.checkout.payment.process') }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-            },
-            body: JSON.stringify({
-                name: purchaser.name,
-                email: purchaser.email,
-                phone: purchaser.phone
-            })
-        });
-
-        const { clientSecret } = await response.json();
-
-        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: card,
-                billing_details: {
+        submitButton.textContent = 'Confirming Payment';
+        try {
+            // Fetch client secret
+            const response = await fetch("{{ route('shop.checkout.payment.process') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                },
+                body: JSON.stringify({
                     name: purchaser.name,
                     email: purchaser.email,
                     phone: purchaser.phone
+                })
+            });
+
+            // Check if the response from your backend was successful
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to get client secret from server.');
+            }
+
+            const { clientSecret } = await response.json();
+
+            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: purchaser.name,
+                        email: purchaser.email,
+                        phone: purchaser.phone
+                    }
+                }
+            });
+
+            if (error) {
+                document.getElementById('card-errors').textContent = error.message;
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit';
+                window.location.href = "{{ route('shop.checkout.payment') }}";
+            } else {
+                // Payment was successful, now send paymentIntent.id to backend via POST
+                const confirmOrderResponse = await fetch("{{ route('shop.checkout.order.process') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                    },
+                    body: JSON.stringify({
+                        payment_intent_id: paymentIntent.id
+                    })
+                });
+
+                if (confirmOrderResponse.ok) {
+                    window.location.href = "{{ route('shop.checkout.payment.success') }}"; // Redirect to the GET route for display
+                } else {
+                    const errorData = await confirmOrderResponse.json();
+                    document.getElementById('card-errors').textContent = errorData.error || 'Failed to confirm order on server.';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Submit';
                 }
             }
-        });
-
-        if (error) {
-            document.getElementById('card-errors').textContent = error.message;
-            submitButton.disabled = false;
-        } else {
-            alert('Payment successful!');
-            window.location.href = "{{ route('shop.checkout.payment.success') }}";
+        } catch (err) {
+            // Handle any errors that occurred during fetch or Stripe confirmation
+            document.getElementById('card-errors').textContent = err.message || 'An unexpected error occurred.';
+            submitButton.disabled = false; // Re-enable button on error
+            submitButton.textContent = 'Submit';
+            console.error('Payment processing error:', err);
         }
     });
 </script>

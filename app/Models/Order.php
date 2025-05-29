@@ -25,6 +25,18 @@ class Order extends Model
         'tracking_number',
         'shipped_at',
         'notes',
+        'payment_intent_id',
     ];
+
+    // Relationships here if you have them,
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 
 }
