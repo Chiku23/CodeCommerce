@@ -39,9 +39,8 @@ Route::prefix('shop')->name('shop.')->group(function () {
         Route::post('/email-submit', [CheckoutController::class, 'emailSubmit'])->name('email');
         Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
         Route::post('/payment/payment-process', [CheckoutController::class, 'createPaymentIntent'])->name('payment.process');
-        Route::get('/thank-you', function () {
-            return view('shop.checkout.thank-you');
-        })->name('payment.success');
+        Route::post('/payment/order-process', [CheckoutController::class, 'processOrderConfirmation'])->name('order.process');
+        Route::get('/thank-you', [CheckoutController::class, 'showOrderConfirmation'])->name('payment.success');
     });
 
     Route::get('/{productSlug}', [ProductController::class , 'show'])->name('productShow');
