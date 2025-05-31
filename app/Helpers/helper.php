@@ -81,7 +81,7 @@ function getAdminCounts()
         'Orders' => Order::count(),
         'Users' => User::count(),
         'Settings' => null,
-        'Product Reviews' => ProductReview::count(),
+        'Reviews' => ProductReview::count(),
     ];
 }
 
