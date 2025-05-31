@@ -5,7 +5,7 @@ Heading Format - Date [dd/mm/yyyy] - #[Commit no.(for the day)]
 - {List all changes that is done in the commit}
 ************************************************************
 
-Date: 30/05/2025 - #1
+Date: 31/05/2025 - #1
 - Admin Panel - Orders page.
   - Worked on the UI.
   - Orders are displayed in a table.
