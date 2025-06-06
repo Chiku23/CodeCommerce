@@ -13,5 +13,8 @@ Date: 31/05/2025 - #1
   - Updated UI to display the users in a table layout.
   - Added more columns like, Phone, ID, Role etc.
 
-
+Date: 06/06/2025 - #1
+- User Profile - Profile Information
+  - Created new Routes, Views, and controller
+  - Updated UI to display basic Information.
 

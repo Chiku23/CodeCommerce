@@ -7,6 +7,7 @@ use App\Http\Controllers\Shop\Auth\LoginController;
 use App\Http\Controllers\Shop\ProductController;
 use App\Http\Controllers\Shop\Auth\RegisterController;
 use App\Http\Controllers\Shop\Checkout\CheckoutController;
+use App\Http\Controllers\Shop\UserController;
 
 // include the admin routes
 require_once __DIR__ . '/admin.php';
@@ -42,6 +43,9 @@ Route::prefix('shop')->name('shop.')->group(function () {
         Route::post('/payment/order-process', [CheckoutController::class, 'processOrderConfirmation'])->name('order.process');
         Route::get('/thank-you', [CheckoutController::class, 'showOrderConfirmation'])->name('payment.success');
     });
+
+    // Profile Routes
+    Route::get('/user', [UserController::class, 'index'])->name('user');
 
     Route::get('/{productSlug}', [ProductController::class , 'show'])->name('productShow');
 });

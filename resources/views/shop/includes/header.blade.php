@@ -8,7 +8,7 @@
             <span class="px-4 capitalize">{{ session('user')? 'Hello '.session('user')['name'] : '' }}</span>
             <div class="iconMenus flex gap-8">
                 @if (Auth::check())
-                    <a href="{{ route('shop.login') }}" class="mx-2 flex items-center justify-center text-4xl" title="Profile">
+                    <a href="{{ route('shop.user') }}" class="mx-2 flex items-center justify-center text-4xl" title="Profile">
                         <i class="fa-solid fa-user text-blue-500"></i>
                     </a>
                     <a href="{{ route('shop.logout') }}" class="mx-2 flex items-center justify-center text-4xl" title="Log Out">
