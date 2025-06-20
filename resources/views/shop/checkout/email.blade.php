@@ -35,19 +35,19 @@
                             <div class="justify-between md:block">
                                 <span class="text-gray-700">{{ $item->quantity }} X </span>
                                 <span class="md:hidden font-semibold text-gray-600">Price:</span>
-                                <span class="text-gray-700">{!! rupeeSign() !!}{{ number_format($item->price_at_add, 2) }}</span>
+                                <span class="text-gray-700">{!! dollarSign() !!}{{ number_format($item->price_at_add, 2) }}</span>
                             </div>
 
                             {{-- Subtotal (Mobile & Desktop) --}}
                             <div class="justify-between text-right">
                                 <span class="md:hidden font-semibold text-gray-600">Subtotal:</span>
-                                <span class="font-bold text-gray-900">{!! rupeeSign() !!}{{ number_format($item->price_at_add * $item->quantity, 2) }}</span>
+                                <span class="font-bold text-gray-900">{!! dollarSign() !!}{{ number_format($item->price_at_add * $item->quantity, 2) }}</span>
                             </div>
                         </li>
                     @endforeach
                     <div class="flex justify-between items-center text-xl font-bold text-gray-800 mt-4 border-t-2 p-4">
                         <span>Total:</span>
-                        <span>{!! rupeeSign() !!}{{ number_format($cart->items->sum(fn($item) => $item->price_at_add * $item->quantity), 2) }}</span>
+                        <span>{!! dollarSign() !!}{{ number_format($cart->items->sum(fn($item) => $item->price_at_add * $item->quantity), 2) }}</span>
                     </div>
                 </ol>
             </div>

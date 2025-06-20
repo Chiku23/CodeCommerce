@@ -93,7 +93,7 @@ class CheckoutController extends Controller
 
         $intent = PaymentIntent::create([
             'amount' => $amount*100,
-            'currency' => 'inr',
+            'currency' => 'usd',
             'metadata' => [
                 'user_id' => Auth::id(),
                 'cart_id' => $cart->id,
@@ -123,7 +123,7 @@ class CheckoutController extends Controller
         }
 
         // Get the payment intent ID from the request
-        $paymentIntentId = $request->input('payment_intent_id');
+        $paymentIntentId = $request->input('payment_intent_id') ?? $request->query('payment_intent');
 
         if (!$paymentIntentId) {
             Log::warning('Order Confirmation: Missing payment_intent_id in request.');
@@ -134,7 +134,10 @@ class CheckoutController extends Controller
 
         try {
             // Retrieve the Payment Intent from Stripe
-            $paymentIntent = PaymentIntent::retrieve($paymentIntentId);
+            $paymentIntent = PaymentIntent::retrieve([
+                            'id' => $paymentIntentId,
+                            'expand' => ['charges', 'latest_charge']
+                        ]);
 
             // Check if the payment was successful
             if ($paymentIntent->status !== 'succeeded') {
@@ -179,7 +182,7 @@ class CheckoutController extends Controller
                 'user_id' => $userId,
                 'status' => 'pending', // we will keep it as pending - will be changed after we confirm it from admin panel.
                 'total_amount' => $totalAmount,
-                'payment_method' => 'Stripe',
+                'payment_method' => $paymentIntent->latest_charge->payment_method_details->type ?? 'Stripe',
                 'payment_status' => 'paid',
                 'payment_intent_id' => $paymentIntent->id, // Store Stripe Payment Intent ID
                 'shipping_address' => json_encode([

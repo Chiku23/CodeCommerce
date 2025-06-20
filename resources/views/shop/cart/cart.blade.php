@@ -28,7 +28,7 @@
                     {{-- Price (Mobile & Desktop) --}}
                     <div class="flex justify-between md:block">
                         <span class="md:hidden font-semibold text-gray-600">Price:</span>
-                        <span class="text-gray-700">{!! rupeeSign() !!}{{ number_format($item->price_at_add, 2) }}</span>
+                        <span class="text-gray-700">{!! dollarSign() !!}{{ number_format($item->price_at_add, 2) }}</span>
                     </div>
 
                     {{-- Quantity (Mobile & Desktop) --}}
@@ -41,7 +41,7 @@
                     {{-- Subtotal (Mobile & Desktop) --}}
                     <div class="flex justify-between md:block text-right">
                         <span class="md:hidden font-semibold text-gray-600">Subtotal:</span>
-                        <span class="font-bold text-gray-900">{!! rupeeSign() !!}{{ number_format($item->price_at_add * $item->quantity, 2) }}</span>
+                        <span class="font-bold text-gray-900">{!! dollarSign() !!}{{ number_format($item->price_at_add * $item->quantity, 2) }}</span>
                     </div>
                 </div>
             @endforeach
@@ -50,7 +50,7 @@
         <div class="cart-summary bg-white rounded-lg shadow-md p-4 md:p-6 self-end w-full md:w-1/3 lg:w-1/4">
             <div class="flex justify-between items-center text-xl font-bold text-gray-800 mb-4 border-b pb-3">
                 <span>Total:</span>
-                <span>{!! rupeeSign() !!}{{ number_format($cart->items->sum(fn($item) => $item->price_at_add * $item->quantity), 2) }}</span>
+                <span>{!! dollarSign() !!}{{ number_format($cart->items->sum(fn($item) => $item->price_at_add * $item->quantity), 2) }}</span>
             </div>
             <a href="{{ Route('shop.checkout.index') }}" class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">
                 Proceed to Checkout

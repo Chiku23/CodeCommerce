@@ -173,8 +173,8 @@ function getCartCount()
  *
  * @return string
  */
-function rupeeSign(){
-    return '<i class="fa-solid fa-indian-rupee-sign"></i>';
+function dollarSign(){
+    return '<i class="fa-solid fa-dollar-sign"></i>';
 }
 
 /**
