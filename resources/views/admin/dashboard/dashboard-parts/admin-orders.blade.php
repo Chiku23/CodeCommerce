@@ -72,7 +72,7 @@
                                 </span>
                             </td>
                             <td class="{{ $tdClass }} text-gray-500 {{ $tdBorderClass }}">
-                                {!! rupeeSign() !!} {{ number_format($order['total_amount'], 2) }}
+                                {!! dollarSign() !!} {{ number_format($order['total_amount'], 2) }}
                             </td>
                             <td class="{{ $tdClass }} text-gray-500 {{ $tdBorderClass }}">
                                 {{ $purchaserEmail }}

@@ -29,9 +29,9 @@ $arrProducts = $products->toArray();
                             {{-- Price Details --}}
                             <div class="productPrice text-lg py-2">
                                 @if ($product['compare_at_price'])
-                                    {!! rupeeSign() !!}<span class="productComparePrice text-sm line-through">{{$product['compare_at_price']}}</span>
+                                    {!! dollarSign() !!}<span class="productComparePrice text-sm line-through">{{$product['compare_at_price']}}</span>
                                 @endif
-                                {!! rupeeSign() !!}{{$product['price']}}
+                                {!! dollarSign() !!}{{$product['price']}}
                             </div>
                         </div>
                     </a>

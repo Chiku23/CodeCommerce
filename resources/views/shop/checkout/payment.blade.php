@@ -27,105 +27,120 @@
 
 <script>
     const stripe = Stripe("{{ config('services.stripe.public') }}");
-    const elements = stripe.elements();
-    const style = {
-        base: {
-            color: '#32325d',
-            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-            fontSize: '16px',
-            '::placeholder': {
-                color: '#a0aec0',
-            }
-        },
-        invalid: {
-            color: '#fa755a',
-            iconColor: '#fa755a'
-        }
-    };
+    const purchaser = @json($purchaser);
+    const amountInCents = {{ $amountInCents ?? 1000 }};
+    let elements;
+    let clientSecret;
 
-    const card = elements.create('card', {
-        style: style,
-        hidePostalCode: true // Optional to simplify the form
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Fetch clientSecret
+        clientSecret = await createPaymentIntent(purchaser.name, purchaser.email, purchaser.phone);
+        if (!clientSecret) return;
+
+        // Initialize Elements
+        elements = stripe.elements({ clientSecret });
+        const paymentElement = elements.create('payment', {
+            layout: {
+                type: 'tabs',
+                defaultCollapsed: false,
+            }
+        });
+        paymentElement.mount('#card-element');
+
     });
 
-    card.mount('#card-element');
-
-    const form = document.getElementById('payment-form');
-    const submitButton = document.getElementById('submit');
-    const purchaser = @json($purchaser);
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        submitButton.disabled = true;
-        submitButton.textContent = 'Confirming Payment';
+    async function createPaymentIntent(name, email, phone) {
         try {
-            // Fetch client secret
-            const response = await fetch("{{ route('shop.checkout.payment.process') }}", {
+            const res = await fetch("{{ route('shop.checkout.payment.process') }}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
                 },
-                body: JSON.stringify({
-                    name: purchaser.name,
-                    email: purchaser.email,
-                    phone: purchaser.phone
-                })
+                body: JSON.stringify({ name, email, phone })
             });
 
-            // Check if the response from your backend was successful
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to get client secret from server.');
+            if (!res.ok) {
+                const error = await res.json();
+                showError(error.error || 'Failed to get payment intent.');
+                return null;
             }
 
-            const { clientSecret } = await response.json();
+            const data = await res.json();
+            return data.clientSecret;
+        } catch (err) {
+            console.error(err);
+            showError(err.message || 'Unexpected error.');
+            return null;
+        }
+    }
 
-            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: card,
+    document.getElementById('payment-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const button = document.getElementById('submit');
+        button.disabled = true;
+        button.textContent = 'Confirming Payment';
+
+        // Submit the Payment Element (required step)
+        await elements.submit();
+
+        const { error, paymentIntent } = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                return_url: "{{ route('shop.checkout.order.process') }}?from=redirect",
+                payment_method_data: {
                     billing_details: {
                         name: purchaser.name,
                         email: purchaser.email,
                         phone: purchaser.phone
                     }
                 }
-            });
+            },
+            clientSecret
+        });
 
-            if (error) {
-                document.getElementById('card-errors').textContent = error.message;
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit';
-                window.location.href = "{{ route('shop.checkout.payment') }}";
-            } else {
-                // Payment was successful, now send paymentIntent.id to backend via POST
-                const confirmOrderResponse = await fetch("{{ route('shop.checkout.order.process') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                    },
-                    body: JSON.stringify({
-                        payment_intent_id: paymentIntent.id
-                    })
-                });
-
-                if (confirmOrderResponse.ok) {
-                    window.location.href = "{{ route('shop.checkout.payment.success') }}"; // Redirect to the GET route for display
-                } else {
-                    const errorData = await confirmOrderResponse.json();
-                    document.getElementById('card-errors').textContent = errorData.error || 'Failed to confirm order on server.';
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Submit';
-                }
-            }
-        } catch (err) {
-            // Handle any errors that occurred during fetch or Stripe confirmation
-            document.getElementById('card-errors').textContent = err.message || 'An unexpected error occurred.';
-            submitButton.disabled = false; // Re-enable button on error
-            submitButton.textContent = 'Submit';
-            console.error('Payment processing error:', err);
+        if (error) {
+            showError(error.message);
+            button.disabled = false;
+            button.textContent = 'Submit';
+        } else {
+            await handlePostPayment(paymentIntent);
         }
     });
+
+    async function handlePostPayment(paymentIntent) {
+        try {
+            if (paymentIntent.status === 'requires_action') {
+                const result = await stripe.confirmCardPayment(clientSecret);
+                if (result.error) {
+                    showError(result.error.message);
+                    return;
+                }
+            }
+
+            const confirmRes = await fetch("{{ route('shop.checkout.order.process') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                },
+                body: JSON.stringify({ payment_intent_id: paymentIntent.id })
+            });
+
+            if (confirmRes.ok) {
+                window.location.href = "{{ route('shop.checkout.payment.success') }}";
+            } else {
+                const errorData = await confirmRes.json();
+                showError(errorData.error || 'Order confirmation failed.');
+            }
+        } catch (err) {
+            console.error(err);
+            showError(err.message || 'Unexpected error.');
+        }
+    }
+
+    function showError(message) {
+        document.getElementById('card-errors').textContent = message;
+    }
 </script>
 @endsection

@@ -11,6 +11,9 @@ class UserController extends Controller
 {
     public function index(){
         $user = Auth::user();
+        if(!$user){
+            return redirect()->route('home');
+        }
         return view('shop.user.user-profile', compact('user'));
     }
 }
