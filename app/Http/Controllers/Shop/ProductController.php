@@ -28,7 +28,9 @@ class ProductController extends Controller
         $products = new Product;
         // Retrieve the product details
         $product = $products->where('slug',$slug)->first();
-
+        if(!$product){
+            return redirect()->route('home');
+        }
         return(view('shop.product.show',compact('product')));
     }
 

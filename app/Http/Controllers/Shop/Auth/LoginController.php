@@ -58,7 +58,7 @@ class LoginController extends Controller
         ]);
 
         // Redirect to Homepage
-        return redirect('/');
+        return redirect()->route('home');
     }
 
     // Handle logout request
@@ -67,6 +67,6 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->forget('user'); //forget the user data
         $request->session()->flash('status', 'Logged Out Successfully !');
-        return redirect('/'); // Redirect to homepage or another appropriate route
+        return redirect()->route('home'); // Redirect to homepage or another appropriate route
     }
 }

@@ -11,7 +11,7 @@
     <title>{{config('app.name')}}</title>
     @stack('styles')
 </head>
-<body class="bg-background text-black flex flex-col min-h-screen">
+<body class="relative bg-background text-black flex flex-col min-h-screen">
     {{-- Include Header --}}
     {{-- @if(!Request::routeIs('login') && !Request::routeIs('register')) --}}
         @include('shop.includes.header')
