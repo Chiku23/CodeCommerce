@@ -11,16 +11,16 @@ $arrProducts = $products->toArray();
     </div>
     <div class="p-2"><hr></div>
     {{-- List All Products --}}
-    <div class="products grid grid-cols-12 gap-8 max-w-[1400px] mx-auto">
+    <div class="products grid grid-cols-12 gap-8 max-w-[1400px] mx-auto p-2">
         @if(!empty($arrProducts))
             @foreach ($arrProducts as $product)
                 @php
                      $productImage = getProductMainImage($product['id']);
                      $category = getProductCategory($product['category_id']);
                 @endphp
-                <div class="Product border-4 shadow-lg border-white m-2 col-span-3 relative flex flex-col h-full m-2 bg-primary">
-                    <div class="categoryName text-sm border-2 bg-gray-200 absolute top-0 right-0 z-50">{{$category['name']}}</div>
+                <div class="Product border-4 shadow-lg border-white col-span-3 relative flex flex-col h-full bg-primary">
                     <a class="productTop" href="{{ url('shop/'.$product['slug']) }}">
+                        <div class="categoryName text-sm border-2 bg-gray-200 absolute top-0 right-0 z-50">{{$category['name']}}</div>
                         <div class="ProductImage overflow-hidden">
                             <img src="{{ asset('storage/' . $productImage['path']) }}" alt="{{$product['name']}}" class="w-full h-full hover:scale-110 ease-in-out duration-100 cover">
                         </div>
@@ -84,7 +84,7 @@ $arrProducts = $products->toArray();
                 .then(data => {
                     console.log('Success:', data);
                     // Handle success (e.g., show a success message, update cart icon/count)
-                    alert(data.message || 'Product added to cart!');
+                    showPopup(data.message || 'Product added to cart!');
 
                     // Update the cart count display
                     if (data.cartItemCount !== undefined && document.getElementById('cart-count')) {
@@ -102,7 +102,7 @@ $arrProducts = $products->toArray();
                     } else if (typeof error === 'string') {
                         errorMessage = error;
                     }
-                    alert(errorMessage); // Show error message
+                    showPopup(errorMessage); // Show error message
                     // Re-enable button
                     button.disabled = false; button.textContent = 'Add to Cart';
                 });

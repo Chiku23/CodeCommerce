@@ -20,10 +20,7 @@
                             ID
                         </th>
                         <th scope="col" class="{{ $thClasses }}">
-                            User ID
-                        </th>
-                        <th scope="col" class="{{ $thClasses }}">
-                            Status
+                            Order Status
                         </th>
                         <th scope="col" class="{{ $thClasses }}">
                             Total Amount
@@ -32,19 +29,10 @@
                             Purchaser Email
                         </th>
                         <th scope="col" class="{{ $thClasses }}">
-                            Payment Method
-                        </th>
-                        <th scope="col" class="{{ $thClasses }}">
-                            Payment Status
-                        </th>
-                        <th scope="col" class="{{ $thClasses }}">
-                            Payment Intent ID
-                        </th>
-                        <th scope="col" class="{{ $thClasses }}">
-                            Tracking Number
-                        </th>
-                        <th scope="col" class="{{ $thClasses }}">
                             Created At
+                        </th>
+                        <th scope="col" class="{{ $thClasses }}">
+                            
                         </th>
                     </tr>
                 </thead>
@@ -57,10 +45,7 @@
                         @endphp
                         <tr>
                             <td class="{{ $tdClass }} font-medium text-gray-900 {{ $tdBorderClass }}">
-                                {{ $order['id'] }}
-                            </td>
-                            <td class="{{ $tdClass }} text-gray-500 {{ $tdBorderClass }}">
-                                {{ $order['user_id'] }}
+                                    {{ $order['id'] }}
                             </td>
                             <td class="{{ $tdClass }} text-gray-500 {{ $tdBorderClass }}">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
@@ -78,24 +63,12 @@
                                 {{ $purchaserEmail }}
                             </td>
                             <td class="{{ $tdClass }} text-gray-500 {{ $tdBorderClass }}">
-                                {{ $order['payment_method'] ?? 'N/A' }}
-                            </td>
-                            <td class="{{ $tdClass }} text-gray-500 {{ $tdBorderClass }}">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                    @if($order['payment_status'] == 'paid') bg-green-100 text-green-800
-                                    @elseif($order['payment_status'] == 'pending') bg-yellow-100 text-yellow-800
-                                    @else bg-red-100 text-red-800 @endif">
-                                    {{ ucfirst($order['payment_status']) }}
-                                </span>
-                            </td>
-                            <td class="{{ $tdClass }} text-gray-500 {{ $tdBorderClass }}">
-                                {{ $order['payment_intent_id'] ?? 'N/A' }}
-                            </td>
-                             <td class="{{ $tdClass }} text-gray-500 {{ $tdBorderClass }}">
-                                {{ $order['tracking_number'] ?? 'N/A' }}
-                            </td>
-                            <td class="{{ $tdClass }} text-gray-500 {{ $tdBorderClass }}">
                                 {{ \Carbon\Carbon::parse($order['created_at'])->format('M d, Y h:i A') }}
+                            </td>
+                            <td class="{{ $tdClass }} text-blue-500 {{ $tdBorderClass }}">
+                               <a href="{{ url('admin/orders/order/').'/'.$order['id'] }}">
+                                    View Order
+                               </a>
                             </td>
                         </tr>
                     @endforeach

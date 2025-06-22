@@ -12,6 +12,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class , 'index'])->name('home');
     Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/order/{orderid}', [AdminOrderController::class, 'viewOrder']);
     Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
     Route::get('/users', [AdminUserListController::class, 'index'])->name('users.index');
     Route::get('/brands', [AdminBrandController::class, 'index'])->name('brands.index');

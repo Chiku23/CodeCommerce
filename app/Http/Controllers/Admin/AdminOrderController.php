@@ -12,4 +12,16 @@ class AdminOrderController extends Controller
         $orders = Order::get();
         return view('admin.dashboard.dashboard-parts.admin-orders',compact('orders'));
     }
+
+    public function viewOrder(Request $request){
+        if(!$request['orderid']){
+            return redirect()->route('admin.orders.index');
+        }
+        $order = new Order;
+        $objOrder = $order->where('id', $request['orderid'])->first();
+        if(!$objOrder){
+            return redirect()->route('admin.orders.index');
+        }
+        return view('admin.dashboard.dashboard-parts.admin-orderview',compact('objOrder'));
+    }
 }

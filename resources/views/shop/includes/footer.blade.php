@@ -1,0 +1,1 @@
+@include('shop.components.message')
