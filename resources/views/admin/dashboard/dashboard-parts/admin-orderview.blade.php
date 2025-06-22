@@ -93,7 +93,7 @@
                     </tr>
                     <tr>
                         <td class="{{ $td1Class }} {{ $tdBorderClass }}">
-                            Tracing Number
+                            Tracking Number
                         </td>
                         <td class="{{ $tdClass }} {{ $tdBorderClass }}">
                             {{ $objOrder->tracking_number ?? 'N/A' }}
