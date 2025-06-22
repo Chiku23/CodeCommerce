@@ -36,3 +36,9 @@ Date: 21/06/2025
   - Replaced it with the new popup modal.
 - Homepage
   - Updated the layout of the product grid.(improvements)
+
+Date: 22/06/2025
+- Admin Panel
+  - Order table - Displayed only basic data about the order.
+  - Added view order button.
+  - Added new page to show the complete order details after clicked on the view orders button.
