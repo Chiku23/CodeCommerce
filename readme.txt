@@ -42,3 +42,7 @@ Date: 22/06/2025
   - Order table - Displayed only basic data about the order.
   - Added view order button.
   - Added new page to show the complete order details after clicked on the view orders button.
+
+Date: 27/06/2025
+- Cart Page
+  - Removing cart items - Pop up message will be displayed instead of alert.
