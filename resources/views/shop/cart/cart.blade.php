@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
-                alert(data.message || 'Product removed from cart!');
+                showPopup(data.message || 'Product removed from cart!');
                 window.location.reload();
             })
             .catch((error) => {
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (typeof error === 'string') {
                     errorMessage = error;
                 }
-                alert(errorMessage); // Show error message
+                showPopup(errorMessage); // Show error message
                 // Re-enable button
                 button.disabled = false;
             });
