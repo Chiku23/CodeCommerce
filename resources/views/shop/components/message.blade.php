@@ -7,12 +7,18 @@
 <script>
     const messagePopup = document.getElementById('messagePopup');
     const popupmessage = document.getElementById('popupmessage');
-    function showPopup(msg){
+    function showPopup(msg, reload=false){
         popupmessage.textContent = msg;
         messagePopup.classList.remove('hidden');
+        if(reload){
+            messagePopup.classList.add('reload');
+        }
     }
     function closePopup(){
         popupmessage.textContent = 'Hello There...';
         messagePopup.classList.add('hidden');
+        if(messagePopup.classList.contains('reload')){
+            window.location.reload();
+        }
     }
 </script>

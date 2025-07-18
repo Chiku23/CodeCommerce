@@ -72,36 +72,37 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const addToCartButtons = document.querySelectorAll('.removeFromCart');
+    const removeFromCartButtons = document.querySelectorAll('.removeFromCart');
 
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const itemId = this.dataset.itemId;
-            const cartId = this.dataset.cartId;
+    removeFromCartButtons.forEach(button => {
+        button.addEventListener('click', async function () {
+            try {
+                // Get item ID and cart ID from data attributes
+                const itemId = this.dataset.itemId;
+                const cartId = this.dataset.cartId;
 
-            fetch("{{ route('shop.cart.remove') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    item_id: itemId,
-                    cart_id: cartId
-                })
-            })
-            .then(response => {
+                // Send POST request to remove product from cart
+                const response = await fetch("{{ route('shop.cart.remove') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        item_id: itemId,
+                        cart_id: cartId
+                    })
+                });
+
                 if (!response.ok) {
-                    // Try to parse error an JSON if server sends it
+                    // Try to parse error as JSON
                     return response.json().then(err => { throw err; });
                 }
-                return response.json();
-            })
-            .then(data => {
-                showPopup(data.message || 'Product removed from cart!');
-                window.location.reload();
-            })
-            .catch((error) => {
+
+                const data = await response.json();
+                showPopup(data.message || 'Product removed from cart!',true);
+
+            } catch (error) {
                 console.error('Error:', error);
                 let errorMessage = 'Could not remove product from cart.';
                 if (error && error.message) {
@@ -112,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showPopup(errorMessage); // Show error message
                 // Re-enable button
                 button.disabled = false;
-            });
+            }
         });
     });
 });
