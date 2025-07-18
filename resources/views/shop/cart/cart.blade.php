@@ -77,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function () {
     removeFromCartButtons.forEach(button => {
         button.addEventListener('click', async function () {
             try {
+                // Disable the button for multiple submissions.
+                button.disabled = true;
                 // Get item ID and cart ID from data attributes
                 const itemId = this.dataset.itemId;
                 const cartId = this.dataset.cartId;

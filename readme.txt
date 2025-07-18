@@ -50,3 +50,4 @@ Date: 27/06/2025
 Date: 19/07/2025
 - Cart Page
   - Removing cart items - Modification to the popup and JS improvements.
+  - Fixed the bug of multiple submissions of the remove from cart button. 
